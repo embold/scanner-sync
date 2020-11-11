@@ -19,10 +19,10 @@ public class Downloader {
     }
 
     /**
-     * @param opts
-     * @param os
-     * @param checksum
-     * @param destFile
+     * @param opts The sync options
+     * @param os The target OS
+     * @param checksum The current file checksum. Download is triggered if this doesn't match with the server-side checksum
+     * @param destFile Destination file location
      * @return true if package was downloaded (if the checksum didn't match), else false (if the checksum matched)
      * @throws SyncException
      */
