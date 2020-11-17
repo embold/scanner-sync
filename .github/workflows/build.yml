@@ -1,0 +1,104 @@
+name: build
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Maven Repository
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+      - name: Build
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        run: mvn --batch-mode clean deploy --file pom.xml
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Maven Repository
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v11
+        with:
+          servers: '
+               [
+                 {
+                   "id": "github",
+                   "username": "${env.GITHUB_USER}",
+                   "password": "${env.GITHUB_TOKEN}"
+                 },
+                 {
+                   "id": "ossrh",
+                   "username": "${env.MAVEN_USERNAME}",
+                   "password": "${env.MAVEN_PASSWORD}"
+                 }
+               ]'
+          profiles: '
+               [
+                 {
+                    "id": "ossrh",
+                    "activation": {
+                      "activeByDefault": "true"
+                    },
+                    "properties": {
+                      "gpg.passphrase": "${env.GPG_SECRET_KEY_PASSWORD}"
+                    }
+                 }
+               ]'
+
+      - name: Install gpg secret key
+        run: |
+          cat <(echo -e "${{ secrets.GPG_SECRET_KEY }}") | gpg --batch --import
+      - name: Configure Git
+        run: |
+          git config --global committer.email "noreply@github.com"
+          git config --global author.name "${GITHUB_ACTOR}"
+          git config --global author.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+      - name: Prepare release
+        env:
+          GITHUB_USER: 'github-actions'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_SECRET_KEY_PASSWORD: ${{ secrets.GPG_SECRET_KEY_PASSWORD }}
+        run: |
+          mvn \
+            --no-transfer-progress \
+            --batch-mode \
+            -Dgpg.passphrase=${{ secrets.GPG_SECRET_KEY_PASSWORD }} \
+            release:prepare -Prelease
+
+      - name: Push release
+        env:
+          GITHUB_USER: 'github-actions'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          GPG_SECRET_KEY_PASSWORD: ${{ secrets.GPG_SECRET_KEY_PASSWORD }}
+        run: |
+          mvn \
+            --no-transfer-progress \
+            --batch-mode \
+            -Dgpg.passphrase=${{ secrets.GPG_SECRET_KEY_PASSWORD }} \
+            release:perform -Prelease
+      - name: Rollback if failure
+        if: ${{ failure() }}
+        run: mvn --batch-mode release:rollback

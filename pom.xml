@@ -6,7 +6,7 @@
 
     <groupId>io.embold.scan</groupId>
     <artifactId>scanner-sync</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <name>scanner-sync</name>
     <description>Embold scanner update library for remote scan execution workflows</description>
@@ -16,6 +16,23 @@
         <name>com.github.embold</name>
         <url>https://github.com/embold</url>
     </organization>
+
+    <developers>
+        <developer>
+            <id>sudarshanbhide</id>
+            <name>Sudarshan Bhide</name>
+            <email>sudarshan.bhide@embold.io</email>
+            <organization>com.github.embold</organization>
+            <organizationUrl>https://github.com/embold</organizationUrl>
+        </developer>
+        <developer>
+            <id>nileshvirkar</id>
+            <name>Nilesh Virkar</name>
+            <email>nilesh.virkar@embold.io</email>
+            <organization>com.github.embold</organization>
+            <organizationUrl>https://github.com/embold</organizationUrl>
+        </developer>
+    </developers>
 
     <licenses>
         <license>
@@ -28,11 +45,12 @@
     <scm>
         <url>https://github.com/embold/scanner-sync</url>
         <connection>
-            scm:git:git://github.com/embold/scanner-sync.git
+            scm:git:https://github.com/embold/scanner-sync.git
         </connection>
         <developerConnection>
-            scm:git:ssh://git@github.com:embold/scanner-sync.git
+            scm:git:https://github.com/embold/scanner-sync.git
         </developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
@@ -40,6 +58,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <undertow.version>2.2.2.Final</undertow.version>
+        <project.scm.id>github</project.scm.id>
     </properties>
 
     <distributionManagement>
@@ -47,6 +66,10 @@
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
     </distributionManagement>
 
     <dependencies>
@@ -179,6 +202,17 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -220,6 +254,13 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.5</version>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                                <arg>--no-tty</arg>
+                            </gpgArguments>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
