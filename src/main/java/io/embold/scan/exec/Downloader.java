@@ -12,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 
+/**
+ * Helper to download scanner packages
+ */
 public class Downloader {
     private static Logger logger = LogManager.getLogger(Downloader.class);
 
