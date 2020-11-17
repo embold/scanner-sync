@@ -15,6 +15,9 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Checks the version + checksum of a local package version
+ */
 public class VersionCheck {
     private static Logger logger = LogManager.getLogger(VersionCheck.class);
 

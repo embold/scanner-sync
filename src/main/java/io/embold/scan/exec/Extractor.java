@@ -21,6 +21,9 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
+/**
+ * Helper to extract downloaded packages
+ */
 public class Extractor {
     private static Logger logger = LogManager.getLogger(Extractor.class);
 
