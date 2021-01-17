@@ -27,7 +27,7 @@ class DownloadTest extends PreReqBase {
         SyncOpts opts = new SyncOpts(TestConstants.EMB_URL, TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
         try {
             String coronaArchive = tmpCoronaLocation.getAbsolutePath() + File.separator + Constants.CORONA_ARCHIVE;
-            Downloader.getPackage(opts, OsCheck.OSType.Linux, null, coronaArchive);
+            Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux, null, coronaArchive);
         } catch (SyncException e) {
             fail(e.getMessage());
         }
@@ -38,10 +38,10 @@ class DownloadTest extends PreReqBase {
         SyncOpts opts = new SyncOpts(TestConstants.EMB_URL, TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
         try {
             String coronaArchive = tmpCoronaLocation.getAbsolutePath() + File.separator + Constants.CORONA_ARCHIVE;
-            boolean downloaded = Downloader.getPackage(opts, OsCheck.OSType.Linux, null, coronaArchive);
+            boolean downloaded = Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux, null, coronaArchive);
             assertTrue(downloaded);
 
-            downloaded = Downloader.getPackage(opts, OsCheck.OSType.Linux, "X-CHECKSUM", coronaArchive);
+            downloaded = Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux, "X-CHECKSUM", coronaArchive);
             assertTrue(downloaded);
 
             String coronaExtractedLocation = tmpCoronaLocation.getAbsolutePath() + File.separator + "_corona";
@@ -53,7 +53,7 @@ class DownloadTest extends PreReqBase {
             try (FileInputStream fis = new FileInputStream(propsFile)) {
                 String checksum = DigestUtils.md5Hex(fis);
                 logger.info("Checksum for current version: {}", checksum);
-                downloaded = Downloader.getPackage(opts, OsCheck.OSType.Linux, "TESTCHECKSUM", coronaArchive);
+                downloaded = Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux, "TESTCHECKSUM", coronaArchive);
                 assertFalse(downloaded);
             } catch (IOException e) {
                 logger.error("Error calculating checksum, skipping version check", e);

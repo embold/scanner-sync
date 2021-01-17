@@ -42,7 +42,7 @@ public class SyncSession {
                 os = OsCheck.OSType.Linux;
             }
             String tmpCoronaArchive = tmpCoronaLocation.getAbsolutePath() + File.separator + Constants.CORONA_ARCHIVE;
-            boolean downloaded = Downloader.getPackage(opts, os, checksum, tmpCoronaArchive);
+            boolean downloaded = Downloader.getCoronaPackage(opts, os, checksum, tmpCoronaArchive);
             if (downloaded) {
                 // A new package was downloaded, so now we need to extract it and replace it at the target path
 

@@ -43,12 +43,18 @@ public class ApiServer {
                             "                                }";
                     exchange.getResponseSender().send(response);
                 } else {
+                    String file = "test.tar.gz";
+
+                    if(!exchange.getRequestPath().endsWith("corona")) {
+                        String module = StringUtils.substringAfterLast(exchange.getRequestPath(), "/");
+                        file = module + ".tar.gz";
+                    }
                     exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/octet-stream");
-                    exchange.getResponseHeaders().put(Headers.CONTENT_DISPOSITION, "test.tar.gz");
-                    exchange.getResponseHeaders().put(Headers.CONTENT_LENGTH, "12915959");
+                    exchange.getResponseHeaders().put(Headers.CONTENT_DISPOSITION, file);
+                    exchange.getResponseHeaders().put(Headers.CONTENT_LENGTH, new File(RESOURCE_DIR + SEP + file).length());
 
 
-                    try (RandomAccessFile aFile = new RandomAccessFile(RESOURCE_DIR + SEP + "test.tar.gz", "r")) {
+                    try (RandomAccessFile aFile = new RandomAccessFile(RESOURCE_DIR + SEP + file, "r")) {
 
                         try (FileChannel inChannel = aFile.getChannel()) {
                             long fileSize = inChannel.size();

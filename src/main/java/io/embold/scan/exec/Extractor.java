@@ -1,7 +1,6 @@
 package io.embold.scan.exec;
 
 import io.embold.scan.SyncException;
-import io.embold.scan.SyncOpts;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
