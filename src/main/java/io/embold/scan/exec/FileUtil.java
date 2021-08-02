@@ -10,6 +10,9 @@ public class FileUtil {
     private FileUtil(){}
     private static Logger logger = LogManager.getLogger(FileUtil.class);
 
+    public static void deleteDirQuietly(String dir) {
+        deleteDirQuietly(new File(dir));
+    }
     public static void deleteDirQuietly(File dir) {
         if (dir != null) {
             logger.debug("Deleting: {}", dir);
