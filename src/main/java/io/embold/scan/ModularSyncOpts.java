@@ -19,14 +19,18 @@ public class ModularSyncOpts extends SyncOpts {
 
     public ModularSyncOpts(String emboldUrl, String emboldToken, String coronaLocation, Set<Package> packages) throws SyncException {
         super(emboldUrl, emboldToken, coronaLocation);
-        this.packages = packages;
-        this.coronaPackageCache = coronaLocation + File.separator + Constants.CORONA_PKG_CACHE;
-        File f = new File(this.coronaPackageCache);
-        if (!f.exists()) {
-            if (!f.mkdirs()) {
-                throw new SyncException("Failed to create package cache dir: " + f);
-            }
-        }
+     try {
+         this.packages = packages;
+         this.coronaPackageCache = coronaLocation + File.separator + Constants.CORONA_PKG_CACHE;
+         File f = new File(this.coronaPackageCache);
+         if (!f.exists()) {
+             if (!f.mkdirs()) {
+                 throw new SyncException("Failed to create package cache dir: " + f);
+             }
+         }
+     } catch (Exception e) {
+         throw new SyncException("Failed to create package cache", e);
+     }
     }
 
     public Set<Package> getPackages() {
