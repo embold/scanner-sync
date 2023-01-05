@@ -1,5 +1,6 @@
 package io.embold.scan.exec;
 
+import com.sun.java.swing.plaf.windows.resources.windows;
 import io.embold.scan.SyncException;
 import io.embold.scan.SyncOpts;
 import kong.unirest.GetRequest;
@@ -30,14 +31,14 @@ public class Downloader {
      * @throws SyncException
      */
     public static boolean getCoronaPackage(SyncOpts opts, OsCheck.OSType os, String checksum, String destFile) throws SyncException {
-        return downloadPackageFromUrl(opts, opts.getEmboldUrl() + "/api/v1/packagedownload/", os, "corona", checksum, destFile) != null;
+        return downloadPackageFromUrl(opts, opts.getEmboldUrl() + "/packagedownload/", os, "corona", checksum, destFile) != null;
     }
-
     public static File getShardedPackage(SyncOpts opts, OsCheck.OSType os, String packageName, String checksum, String destFile) throws SyncException {
-        return downloadPackageFromUrl(opts, opts.getEmboldUrl() + "/api/v1/shardedpackagedownload/", os, packageName, checksum, destFile);
+        return downloadPackageFromUrl(opts, opts.getEmboldUrl() + "/sharedpackagedownload/", os, packageName, checksum, destFile);
     }
 
     private static File downloadPackageFromUrl(SyncOpts opts, String url, OsCheck.OSType os, String packageName, String checksum, String destFile) throws SyncException {
+        logger.info("downloadPackageFromUrl : " + url);
         String targetUrl = url + packageName + "?os=" + os.osname();
         if (StringUtils.isNotEmpty(checksum)) {
             targetUrl += "&checksum=" + checksum;
@@ -52,6 +53,7 @@ public class Downloader {
         }
 
         HttpResponse<File> response = request.asFile(destFile);
+        logger.info("Response status" + response.getStatus());
         if (response.isSuccess()) {
             if (response.getStatus() == 200) {
                 logger.info("Current embold scanner package: {} is at checksum: {}, downloading latest package...", packageName, checksum);
@@ -66,7 +68,7 @@ public class Downloader {
         }
 
         // Should not reach here. Some other unexpected code, do not proceed
-        logger.error("Error downloading package: {} with error code: {} ", packageName, response.getStatus());
+        logger.error("Error downloading package: {} with error code: {}", packageName, response.getStatus());
         throw new SyncException("Error downloading package: " + packageName + " with error code: " + response.getStatus());
     }
 }

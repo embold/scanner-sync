@@ -44,27 +44,39 @@ public class ModularSyncSession {
 
     private void syncPackage(Package pack) throws SyncException {
         logger.info("Synching package: {}", pack);
-        String checksum = packageChecksum(pack);
+        try {
+            String checksum = packageChecksum(pack);
+            logger.info("Checksum is calculated, " + checksum);
 
-        OsCheck.OSType os = OsCheck.getOperatingSystemType();
-        if (os.equals(OsCheck.OSType.MacOS)) {
-            // Currently if OS is Mac, default to Linux (TODO until we have Mac build)
-            os = OsCheck.OSType.Linux;
+            OsCheck.OSType os = OsCheck.getOperatingSystemType();
+            if (os.equals(OsCheck.OSType.MacOS)) {
+                // Currently if OS is Mac, default to Linux (TODO until we have Mac build)
+                os = OsCheck.OSType.Linux;
+            }
+
+            logger.info("os:" + os.toString());
+
+            File packageFile = Downloader.getShardedPackage(opts, os, pack.name(), checksum, packageFile(pack));
+
+            logger.info("Package downloaded successfully");
+
+            if (packageFile != null) {
+                // A new package was downloaded, so now we need to extract it and replace it at the target path
+                File d = new File(packageDir(pack));
+                // Ensure clean dir
+                FileUtil.deleteDirQuietly(d);
+                logger.info("Old package deleted successfully");
+                // Unzip
+                Extractor.tgzExtract(packageFile, d);
+                logger.info("Extraction done successfully");
+                // Copy to destination
+                PackageMover.run(opts, d);
+                logger.info("Copy to destination done successfully");
+            }
+        } catch (Exception e) {
+            logger.error("Exception in syncPackage", e);
+            throw new SyncException(e);
         }
-
-        File packageFile = Downloader.getShardedPackage(opts, os, pack.name(), checksum, packageFile(pack));
-
-        if (packageFile != null) {
-            // A new package was downloaded, so now we need to extract it and replace it at the target path
-            File d = new File(packageDir(pack));
-            // Ensure clean dir
-            FileUtil.deleteDirQuietly(d);
-            // Unzip
-            Extractor.tgzExtract(packageFile, d);
-            // Copy to destination
-            PackageMover.run(opts, d);
-        }
-
         logger.info("Finished synching package: {}", pack);
     }
 
