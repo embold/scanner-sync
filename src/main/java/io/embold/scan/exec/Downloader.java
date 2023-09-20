@@ -1,6 +1,5 @@
 package io.embold.scan.exec;
 
-import com.sun.java.swing.plaf.windows.resources.windows;
 import io.embold.scan.SyncException;
 import io.embold.scan.SyncOpts;
 import kong.unirest.GetRequest;
