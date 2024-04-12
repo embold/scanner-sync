@@ -60,7 +60,7 @@
         <log4j.version>2.18.0</log4j.version>
     </properties>
 
-<!--    <distributionManagement>
+    <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
@@ -69,8 +69,9 @@
             <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
-    </distributionManagement>-->
+    </distributionManagement>
 
+    <!--
     <distributionManagement>
         <repository>
             <id>acl.central</id>
@@ -83,6 +84,7 @@
             <url>http://artefacts.embold.io/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
+    -->
 
     <dependencies>
         <dependency>
