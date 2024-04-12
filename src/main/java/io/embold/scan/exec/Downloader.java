@@ -1,6 +1,5 @@
 package io.embold.scan.exec;
 
-import com.sun.java.swing.plaf.windows.resources.windows;
 import io.embold.scan.SyncException;
 import io.embold.scan.SyncOpts;
 import kong.unirest.GetRequest;
@@ -34,7 +33,7 @@ public class Downloader {
         return downloadPackageFromUrl(opts, opts.getEmboldUrl() + "/packagedownload/", os, "corona", checksum, destFile) != null;
     }
     public static File getShardedPackage(SyncOpts opts, OsCheck.OSType os, String packageName, String checksum, String destFile) throws SyncException {
-        return downloadPackageFromUrl(opts, opts.getEmboldUrl() + "/sharedpackagedownload/", os, packageName, checksum, destFile);
+        return downloadPackageFromUrl(opts, opts.getEmboldUrl(), os, packageName, checksum, destFile);
     }
 
     private static File downloadPackageFromUrl(SyncOpts opts, String url, OsCheck.OSType os, String packageName, String checksum, String destFile) throws SyncException {
@@ -43,7 +42,7 @@ public class Downloader {
         if (StringUtils.isNotEmpty(checksum)) {
             targetUrl += "&checksum=" + checksum;
         }
-
+        logger.info("targetUrl : " + targetUrl);
         GetRequest request = Unirest.get(targetUrl);
         request.getHeaders().add("Authorization", "Bearer " + opts.getEmboldToken());
 

@@ -27,9 +27,9 @@ public class SyncOpts {
 
     public SyncOpts(String emboldUrl, String emboldToken, String coronaLocation) {
         this.emboldUrl = emboldUrl;
-        if(StringUtils.endsWith(emboldUrl, "/")) {
-            this.emboldUrl = StringUtils.substringBeforeLast(emboldUrl, "/");
-        }
+//        if(StringUtils.endsWith(emboldUrl, "/")) {
+//            this.emboldUrl = StringUtils.substringBeforeLast(emboldUrl, "/");
+//        }
 
         this.emboldToken = emboldToken;
         this.coronaLocation = coronaLocation;

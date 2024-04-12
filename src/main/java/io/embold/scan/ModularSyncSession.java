@@ -49,10 +49,10 @@ public class ModularSyncSession {
             logger.info("Checksum is calculated, " + checksum);
 
             OsCheck.OSType os = OsCheck.getOperatingSystemType();
-            if (os.equals(OsCheck.OSType.MacOS)) {
-                // Currently if OS is Mac, default to Linux (TODO until we have Mac build)
-                os = OsCheck.OSType.Linux;
-            }
+//            if (os.equals(OsCheck.OSType.MacOS)) {
+//                // Currently if OS is Mac, default to Linux (TODO until we have Mac build)
+//                os = OsCheck.OSType.Linux;
+//            }
 
             logger.info("os:" + os.toString());
 

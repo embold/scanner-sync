@@ -24,7 +24,7 @@ class DownloadTest extends PreReqBase {
 
     @Test
     void shouldSyncClean() {
-        SyncOpts opts = new SyncOpts(TestConstants.EMB_URL, TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
+        SyncOpts opts = new SyncOpts(TestConstants.EMB_URL + "/shardedpackagedownload", TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
         try {
             String coronaArchive = tmpCoronaLocation.getAbsolutePath() + File.separator + Constants.CORONA_ARCHIVE;
             Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux, null, coronaArchive);
@@ -35,7 +35,7 @@ class DownloadTest extends PreReqBase {
 
     @Test
     void shouldDownloadTwice() {
-        SyncOpts opts = new SyncOpts(TestConstants.EMB_URL, TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
+        SyncOpts opts = new SyncOpts(TestConstants.EMB_URL + "/shardedpackagedownload", TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
         try {
             String coronaArchive = tmpCoronaLocation.getAbsolutePath() + File.separator + Constants.CORONA_ARCHIVE;
             boolean downloaded = Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux, null, coronaArchive);
