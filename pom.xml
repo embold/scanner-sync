@@ -5,7 +5,7 @@
 
     <groupId>io.embold.scan</groupId>
     <artifactId>scanner-sync</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9-SNAPSHOT</version>
     <name>scanner-sync</name>
     <description>Embold scanner update library for remote scan execution workflows</description>
     <url>https://github.com/embold/scanner-sync</url>
