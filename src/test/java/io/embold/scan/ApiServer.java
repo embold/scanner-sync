@@ -28,6 +28,20 @@ public class ApiServer {
             @Override
             public void handleRequest(final HttpServerExchange exchange) throws Exception {
                 Deque<String> cs = exchange.getQueryParameters().get("checksum");
+                if(StringUtils.contains(exchange.getRequestURI(), "api/product/details"))
+                {
+                    exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
+                    String response =   "{" +
+                                            "productVersion: 'v1'," +
+                                            "license: {" +
+                                                "type: 'st'" +
+                                            "}" +
+                                        "}";
+
+                    exchange.setStatusCode(200);
+                    exchange.getResponseSender().send(response);
+                    return;
+                }
                 String checksum = null;
                 if (cs != null && cs.size() > 0) {
                     checksum = cs.getFirst();

@@ -8,10 +8,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -19,13 +15,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class DownloadTest extends PreReqBase {
     private static Logger logger = LogManager.getLogger(DownloadTest.class);
 
     @Test
     void shouldSyncClean() {
-        SyncOpts opts = new SyncOpts(TestConstants.EMB_URL + "/shardedpackagedownload", TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
         try {
+            SyncOpts opts = new SyncOpts(TestConstants.EMB_URL + "/shardedpackagedownload",
+                    TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
             String coronaArchive = tmpCoronaLocation.getAbsolutePath() + File.separator + Constants.CORONA_ARCHIVE;
             Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux, null, coronaArchive);
         } catch (SyncException e) {
@@ -35,8 +34,9 @@ class DownloadTest extends PreReqBase {
 
     @Test
     void shouldDownloadTwice() {
-        SyncOpts opts = new SyncOpts(TestConstants.EMB_URL + "/shardedpackagedownload", TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
         try {
+            SyncOpts opts = new SyncOpts(TestConstants.EMB_URL + "/shardedpackagedownload",
+                    TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
             String coronaArchive = tmpCoronaLocation.getAbsolutePath() + File.separator + Constants.CORONA_ARCHIVE;
             boolean downloaded = Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux, null, coronaArchive);
             assertTrue(downloaded);
@@ -47,13 +47,15 @@ class DownloadTest extends PreReqBase {
             String coronaExtractedLocation = tmpCoronaLocation.getAbsolutePath() + File.separator + "_corona";
             Extractor.tgzExtract(new File(coronaArchive), new File(coronaExtractedLocation));
 
-            Collection<File> propsFileList = FileUtils.listFiles(new File(coronaExtractedLocation + File.separator + Constants.CORONA), new String[]{"properties"}, false);
+            Collection<File> propsFileList = FileUtils.listFiles(new File(coronaExtractedLocation +
+                    File.separator + Constants.CORONA), new String[]{"properties"}, false);
             File propsFile = propsFileList.iterator().next();
 
             try (FileInputStream fis = new FileInputStream(propsFile)) {
                 String checksum = DigestUtils.md5Hex(fis);
                 logger.info("Checksum for current version: {}", checksum);
-                downloaded = Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux, "TESTCHECKSUM", coronaArchive);
+                downloaded = Downloader.getCoronaPackage(opts, OsCheck.OSType.Linux,
+                        "TESTCHECKSUM", coronaArchive);
                 assertFalse(downloaded);
             } catch (IOException e) {
                 logger.error("Error calculating checksum, skipping version check", e);

@@ -19,7 +19,7 @@ import java.nio.file.Files;
 import static org.junit.jupiter.api.Assertions.*;
 
 class VersionCheckTest {
-    private static Logger logger = LogManager.getLogger(VersionCheckTest.class);
+    private static final Logger logger = LogManager.getLogger(VersionCheckTest.class);
     private static File tmpCoronaLocation = null;
 
     private static final String EMB_URL = "";
@@ -40,6 +40,8 @@ class VersionCheckTest {
             SyncOpts opts = new SyncOpts(EMB_URL, EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
             String checksum = VersionCheck.run(opts);
             assertNull(checksum);
+        } catch (SyncException e) {
+            fail(e.getMessage());
         } finally {
             FileUtil.deleteDirQuietly(coronaDir);
         }
@@ -53,7 +55,7 @@ class VersionCheckTest {
             SyncOpts opts = new SyncOpts(EMB_URL, EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
             String checksum = VersionCheck.run(opts);
             assertNull(checksum);
-        } catch (IOException e) {
+        } catch (IOException | SyncException e) {
             fail(e.getMessage());
         } finally {
             FileUtil.deleteDirQuietly(coronaDir);
@@ -69,7 +71,7 @@ class VersionCheckTest {
             SyncOpts opts = new SyncOpts(EMB_URL, EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
             String checksum = VersionCheck.run(opts);
             assertNull(checksum);
-        } catch (IOException e) {
+        } catch (IOException | SyncException e) {
             fail(e.getMessage());
         } finally {
             FileUtil.deleteDirQuietly(coronaDir);
@@ -87,7 +89,7 @@ class VersionCheckTest {
             SyncOpts opts = new SyncOpts(EMB_URL, EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
             String checksum = VersionCheck.run(opts);
             assertNotNull(checksum);
-        } catch (IOException e) {
+        } catch (IOException | SyncException e) {
             fail(e.getMessage());
         } finally {
             FileUtil.deleteDirQuietly(coronaDir);

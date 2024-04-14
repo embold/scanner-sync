@@ -7,12 +7,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SyncSessionTest extends PreReqBase {
-    private static Logger logger = LogManager.getLogger(SyncSessionTest.class);
+    private static final Logger logger = LogManager.getLogger(SyncSessionTest.class);
 
     @Test
     void shouldSyncClean() {
-        SyncOpts opts = new SyncOpts(TestConstants.EMB_URL, TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath());
         try {
+            SyncOpts opts = new SyncOpts(TestConstants.EMB_URL, TestConstants.EMB_TOKEN,
+                    tmpCoronaLocation.getAbsolutePath());
             new SyncSession(opts).run();
         } catch (SyncException e) {
             fail(e.getMessage());
