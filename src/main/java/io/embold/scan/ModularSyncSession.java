@@ -16,8 +16,8 @@ import java.nio.charset.Charset;
  * It accepts a ModularSyncOpts where you specify which packages are needed (CORE is always downloaded regardless of if you specify or not)
  */
 public class ModularSyncSession {
-    private static Logger logger = LogManager.getLogger(ModularSyncSession.class);
-    private ModularSyncOpts opts;
+    private static final Logger logger = LogManager.getLogger(ModularSyncSession.class);
+    private final ModularSyncOpts opts;
 
     public ModularSyncSession(ModularSyncOpts opts) {
         this.opts = opts;

@@ -11,14 +11,15 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class ModularSyncSessionTest extends PreReqBase {
-    private static Logger logger = LogManager.getLogger(ModularSyncSessionTest.class);
+    private static final Logger logger = LogManager.getLogger(ModularSyncSessionTest.class);
 
     @Test
     void shouldSyncClean() {
         Set<Package> packs = new LinkedHashSet<>();
         packs.add(Package.JAVA);
         try {
-            ModularSyncOpts opts = new ModularSyncOpts(TestConstants.EMB_URL + "/shardedpackagedownload/", TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath(), packs);
+            ModularSyncOpts opts = new ModularSyncOpts(TestConstants.EMB_URL, TestConstants.EMB_TOKEN,
+                    tmpCoronaLocation.getAbsolutePath(), packs);
             new ModularSyncSession(opts).run();
         } catch (SyncException e) {
             fail(e.getMessage());
@@ -30,7 +31,8 @@ class ModularSyncSessionTest extends PreReqBase {
         Set<Package> packs = new LinkedHashSet<>();
         packs.add(Package.JAVA);
         try {
-            ModularSyncOpts opts = new ModularSyncOpts(TestConstants.EMB_URL + "/shardedpackagedownload/", TestConstants.EMB_TOKEN, tmpCoronaLocation.getAbsolutePath(), packs);
+            ModularSyncOpts opts = new ModularSyncOpts(TestConstants.EMB_URL, TestConstants.EMB_TOKEN,
+                    tmpCoronaLocation.getAbsolutePath(), packs);
             ModularSyncSession session = new ModularSyncSession(opts);
             session.run();
             session.run();

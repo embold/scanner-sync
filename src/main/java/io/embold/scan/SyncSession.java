@@ -16,8 +16,8 @@ import java.nio.file.Files;
  * un-tars it and copies it to the desired location, if the current version is not in sync with the server
  */
 public class SyncSession {
-    private static Logger logger = LogManager.getLogger(SyncSession.class);
-    private SyncOpts opts;
+    private static final Logger logger = LogManager.getLogger(SyncSession.class);
+    private final SyncOpts opts;
 
     public SyncSession(SyncOpts opts) {
         this.opts = opts;

@@ -1,7 +1,7 @@
 # Embold scanner-sync
 Embold scanner update library for remote scan execution workflows
 
-![build](https://github.com/embold/scanner-sync/workflows/build/badge.svg?branch=development)
+![build](https://github.com/embold/scanner-sync/actions/workflows/build.yml/badge.svg?branch=development)
 [![Maven Central](https://img.shields.io/maven-central/v/io.embold.scan/scanner-sync.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.embold.scan%22%20AND%20a:%22scanner-sync%22)
 
 

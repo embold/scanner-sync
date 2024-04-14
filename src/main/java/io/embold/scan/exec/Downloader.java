@@ -30,14 +30,17 @@ public class Downloader {
      * @throws SyncException
      */
     public static boolean getCoronaPackage(SyncOpts opts, OsCheck.OSType os, String checksum, String destFile) throws SyncException {
-        return downloadPackageFromUrl(opts, opts.getEmboldUrl() + "/packagedownload/", os, "corona", checksum, destFile) != null;
+        return downloadPackageFromUrl(opts, opts.getEmboldUrl() + "/api/" + opts.getEmboldVersion() + "/packagedownload/", os, "corona", checksum, destFile) != null;
     }
     public static File getShardedPackage(SyncOpts opts, OsCheck.OSType os, String packageName, String checksum, String destFile) throws SyncException {
-        return downloadPackageFromUrl(opts, opts.getEmboldUrl(), os, packageName, checksum, destFile);
+        return downloadPackageFromUrl(opts, opts.getEmboldUrl() + "/api/" + opts.getEmboldVersion() + "/shardedpackagedownload", os, packageName, checksum, destFile);
     }
 
     private static File downloadPackageFromUrl(SyncOpts opts, String url, OsCheck.OSType os, String packageName, String checksum, String destFile) throws SyncException {
         logger.info("downloadPackageFromUrl : " + url);
+        if(!StringUtils.endsWith(url, "/")) {
+            url += "/";
+        }
         String targetUrl = url + packageName + "?os=" + os.osname();
         if (StringUtils.isNotEmpty(checksum)) {
             targetUrl += "&checksum=" + checksum;
