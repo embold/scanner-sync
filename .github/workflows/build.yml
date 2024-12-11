@@ -22,8 +22,9 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        run : echo "MAVEN_USERNAME is set to: ${MAVEN_USERNAME}"  
         #run: mvn --batch-mode clean deploy io.embold.scan:embold-maven-plugin:embold -Dembold.host.url=https://tester.emboldci.dev -Dembold.user.token=${{ secrets.EMBOLD_TOKEN }} --file pom.xml
-        run: mvn --batch-mode clean deploy -Dembold.host.url=https://tester.emboldci.dev -Dembold.user.token=${{ secrets.EMBOLD_TOKEN }} --file pom.xml
+        # run: mvn --batch-mode clean deploy -Dembold.host.url=https://tester.emboldci.dev -Dembold.user.token=${{ secrets.EMBOLD_TOKEN }} --file pom.xml
 
   release:
     runs-on: ubuntu-latest
